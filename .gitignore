@@ -1,41 +1,203 @@
-# Prerequisites
-*.d
+# ====================
+# GENERAL BUILD ARTIFACTS
+# ====================
+build/
+out/
+bin/
+target/
+dist/
+*.build/
 
+# ====================
+# C++ SPECIFIC
+# ====================
 # Compiled Object files
-*.slo
-*.lo
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Linker files
-*.ilk
-
-# Debugger Files
-*.pdb
-
-# Compiled Dynamic libraries
 *.so
 *.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
 *.a
 *.lib
 
 # Executables
 *.exe
 *.out
+a.out
 *.app
 
-# debug information files
-*.dwo
+# CMake
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+compile_commands.json
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Profiling
+*.prof
+gmon.out
+callgrind.out.*
+perf.data*
+*.trace
+flamegraph.svg
+
+# ====================
+# PYTHON SPECIFIC
+# ====================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.pytest_cache/
+*.egg-info/
+dist/
+*.egg
+.coverage
+htmlcov/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# ====================
+# JAVASCRIPT/NODE.JS
+# ====================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+*.tsbuildinfo
+
+# ====================
+# JAVA SPECIFIC
+# ====================
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+
+# Gradle
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+
+# ====================
+# WEB DEVELOPMENT
+# ====================
+.sass-cache/
+*.css.map
+*.js.map
+
+# ====================
+# DATABASE
+# ====================
+*.db
+*.sqlite
+*.sqlite3
+
+# ====================
+# IDE SPECIFIC
+# ====================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.metadata
+.project
+.classpath
+.settings/
+
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+
+# ====================
+# SYSTEM FILES
+# ====================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.nfs*
+
+# ====================
+# TEMPORARY FILES
+# ====================
+*.tmp
+*.temp
+*.log
+*.swp
+*.swo
+*~
+.*.swp
+.*.swo
+
+# ====================
+# CREDENTIALS & SECRETS
+# ====================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.key
+*.pem
+config.json
+secrets.yml
+
+# ====================
+# PACKAGE MANAGERS
+# ====================
+vcpkg_installed/
+conan.lock
+Pipfile.lock
+package-lock.json
+yarn.lock
+
+# ====================
+# DOCUMENTATION
+# ====================
+docs/_build/
+site/

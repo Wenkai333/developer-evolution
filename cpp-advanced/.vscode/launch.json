@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Current File",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build Current File"
+        },
+        {
+            "name": "Debug Selected Program",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/${input:programName}",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "programName",
+            "type": "promptString",
+            "description": "Enter the program name to debug"
+        }
+    ]
+}

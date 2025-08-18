@@ -1,0 +1,17 @@
+{
+    "folders": [
+        {
+            "path": ".",
+            "name": "C++ Advanced Study"
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "*.cpp": "cpp",
+            "*.hpp": "cpp",
+            "*.h": "cpp",
+            "*.cc": "cpp",
+            "*.tpp": "cpp"
+        }
+    }
+}

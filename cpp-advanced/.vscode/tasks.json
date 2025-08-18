@@ -1,0 +1,60 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "./build.sh",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Build the project using build.sh"
+        },
+        {
+            "label": "Build Current File",
+            "type": "shell",
+            "command": "/opt/homebrew/opt/llvm/bin/clang++",
+            "args": [
+                "-std=c++23",
+                "-stdlib=libc++",
+                "-Wall",
+                "-g",
+                "${file}",
+                "-o",
+                "${workspaceFolder}/build/${fileBasenameNoExtension}"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "Compile current file only"
+        },
+        {
+            "label": "Run",
+            "type": "shell",
+            "command": "./run.sh",
+            "args": ["${input:executableName}"],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "dependsOn": ["Build"],
+            "detail": "Run an executable from build directory"
+        },
+        {
+            "label": "Clean",
+            "type": "shell",
+            "command": "rm",
+            "args": ["-rf", "build"],
+            "group": "build",
+            "detail": "Clean build directory"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "executableName",
+            "type": "promptString",
+            "description": "Enter executable name to run"
+        }
+    ]
+}

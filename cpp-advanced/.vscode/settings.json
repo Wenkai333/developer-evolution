@@ -1,0 +1,27 @@
+{
+    // Editor settings
+    "editor.fontSize": 14,
+    "editor.formatOnSave": true,
+    "editor.rulers": [80, 100],
+    "editor.bracketPairColorization.enabled": true,
+    
+    // C/C++ extension settings
+    "C_Cpp.default.compilerPath": "/opt/homebrew/opt/llvm/bin/clang++",
+    "C_Cpp.default.cppStandard": "c++23",
+    "C_Cpp.default.intelliSenseMode": "macos-clang-arm64",
+    "C_Cpp.default.compileCommands": "${workspaceFolder}/compile_commands.json",
+    "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, IndentWidth: 4 }",
+    
+    // CMake settings
+    "cmake.generator": "Ninja",
+    "cmake.configureSettings": {
+        "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm/bin/clang++",
+        "CMAKE_BUILD_TYPE": "Debug"
+    },
+    
+    // Terminal settings
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "terminal.integrated.env.osx": {
+        "PATH": "/opt/homebrew/opt/llvm/bin:/opt/homebrew/bin:${env:PATH}"
+    }
+}

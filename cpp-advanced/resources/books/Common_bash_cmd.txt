@@ -1,0 +1,20 @@
+ bash# Navigation
+cd Documents                  # Change directory
+ls -la                       # List files
+pwd                          # Print working directory
+
+# File Operations
+cp file1 file2               # Copy
+mv oldname newname           # Move/rename
+rm file                      # Remove
+mkdir folder                 # Make directory
+
+# Text Processing
+cat file.txt                 # Display file
+grep "pattern" file          # Search in file
+echo "Hello"                 # Print text
+
+# System
+sudo command                 # Run as admin
+chmod +x script.sh           # Make executable
+which program                # Find program location
