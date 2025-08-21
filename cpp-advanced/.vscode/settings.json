@@ -64,6 +64,5 @@
     // Additional helpful settings
     "editor.minimap.enabled": true,
     "editor.showFoldingControls": "mouseover",
-    "editor.foldingStrategy": "indentation",
-    "workbench.colorTheme": "Default Dark+"
+    "editor.foldingStrategy": "indentation"
 }

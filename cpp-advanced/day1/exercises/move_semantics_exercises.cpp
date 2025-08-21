@@ -1,26 +1,24 @@
 // day1/exercises/move_semantics_exercises.cpp
 // Move Semantics Hands-On Exercises
 
-#include <iostream>
-#include <vector>
-#include <string>
-#include <memory>
-#include <chrono>
 #include <algorithm>
+#include <chrono>
+#include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
 
 // =============================================================================
 // Exercise 1: Fix the String Wrapper Class
 // =============================================================================
 
-class StringWrapper
-{
-private:
+class StringWrapper {
+   private:
     std::string *data_;
 
-public:
+   public:
     // Constructor
-    explicit StringWrapper(const std::string &str)
-    {
+    explicit StringWrapper(const std::string &str) {
         data_ = new std::string(str);
         std::cout << "StringWrapper constructed with: " << *data_ << std::endl;
     }
@@ -28,10 +26,8 @@ public:
     // TODO: Implement destructor
     // Guide: Clean up the dynamically allocated string
     // Hint: delete data_; and set to nullptr
-    ~StringWrapper()
-    {
-        if (data_ != nullptr)
-        {
+    ~StringWrapper() {
+        if (data_ != nullptr) {
             delete data_;
             data_ = nullptr;
         }
@@ -41,8 +37,7 @@ public:
     // Guide: Create a deep copy of the string data
     // Hint: data_ = new std::string(*other.data_);
     // Don't forget to print a message!
-    StringWrapper(const StringWrapper &other)
-    {
+    StringWrapper(const StringWrapper &other) {
         data_ = new std::string(*(other.data_));
         std::cout << "StringWrapper copy constructed with: " << *data_ << std::endl;
     }
@@ -51,8 +46,7 @@ public:
     // Guide: Steal the data pointer from other, leave other in valid state
     // Hint: Take other's data_, set other's data_ to nullptr
     // This should be noexcept!
-    StringWrapper(StringWrapper &&other) noexcept
-    {
+    StringWrapper(StringWrapper &&other) noexcept {
         data_ = other.data_;
         other.data_ = nullptr;
         std::cout << "StringWrapper move constructed with: " << *data_ << std::endl;
@@ -61,12 +55,10 @@ public:
     // TODO: Implement copy assignment operator
     // Guide: 1. Check for self-assignment, 2. Delete current data, 3. Copy from other
     // Hint: if (this != &other) { delete data_; data_ = new std::string(*other.data_); }
-    StringWrapper &operator=(const StringWrapper &other)
-    {
-        if (this != &other)
-        {                                            // Self-assignment check
-            delete data_;                            // Clean up current resource
-            data_ = new std::string(*(other.data_)); // Deep copy
+    StringWrapper &operator=(const StringWrapper &other) {
+        if (this != &other) {                         // Self-assignment check
+            delete data_;                             // Clean up current resource
+            data_ = new std::string(*(other.data_));  // Deep copy
         }
         std::cout << "StringWrapper copy assigned with: " << *data_ << std::endl;
         return *this;
@@ -76,10 +68,8 @@ public:
     // Guide: 1. Check for self-assignment, 2. Delete current data, 3. Steal from other
     // Hint: Similar to move constructor but need to clean up first
     // This should be noexcept!
-    StringWrapper &operator=(StringWrapper &&other) noexcept
-    {
-        if (this != &other)
-        {
+    StringWrapper &operator=(StringWrapper &&other) noexcept {
+        if (this != &other) {
             delete data_;
             data_ = other.data_;
             other.data_ = nullptr;
@@ -89,22 +79,20 @@ public:
     }
 
     // Utility methods (already implemented)
-    const std::string &
-    get() const
-    {
+    const std::string &get() const {
         return *data_;
     }
-    void set(const std::string &str) { *data_ = str; }
+    void set(const std::string &str) {
+        *data_ = str;
+    }
 
-    void print_info() const
-    {
+    void print_info() const {
         std::cout << "StringWrapper contains: \"" << *data_
                   << "\" at address: " << static_cast<void *>(data_) << std::endl;
     }
 };
 
-void test_string_wrapper()
-{
+void test_string_wrapper() {
     std::cout << "\n=== Exercise 1: StringWrapper Test ===\n";
 
     // Test basic construction
@@ -139,16 +127,14 @@ void test_string_wrapper()
 // Exercise 2: Performance Comparison - Copy vs Move
 // =============================================================================
 
-class HeavyResource
-{
-private:
+class HeavyResource {
+   private:
     std::vector<double> data_;
     std::string name_;
 
-public:
+   public:
     explicit HeavyResource(size_t size, const std::string &name = "Resource")
-        : data_(size, 3.14159), name_(name)
-    {
+        : data_(size, 3.14159), name_(name) {
         std::cout << "HeavyResource '" << name_ << "' created with " << size << " elements\n";
     }
 
@@ -156,8 +142,7 @@ public:
     // Guide: Copy both data_ and name_ from other
     // Hint: data_(other.data_), name_(other.name_)
     // Add timing to see how long it takes!
-    HeavyResource(const HeavyResource &other) : data_(other.data_), name_(other.name_)
-    {
+    HeavyResource(const HeavyResource &other) : data_(other.data_), name_(other.name_) {
         std::cout << "HeavyResource is copy construct" << std::endl;
     }
 
@@ -165,17 +150,15 @@ public:
     // Guide: Move both data_ and name_ from other, mark as noexcept
     // Hint: data_(std::move(other.data_)), name_(std::move(other.name_))
     // Add timing to see how fast it is!
-    HeavyResource(HeavyResource &&other) noexcept : data_(std::move(other.data_)), name_(std::move(other.name_))
-    {
+    HeavyResource(HeavyResource &&other) noexcept
+        : data_(std::move(other.data_)), name_(std::move(other.name_)) {
         std::cout << "HeavyResource is move construct" << std::endl;
     }
 
     // TODO: Implement copy assignment
     // Guide: Check self-assignment, then copy data and name
-    HeavyResource &operator=(const HeavyResource &other)
-    {
-        if (this != &other)
-        {
+    HeavyResource &operator=(const HeavyResource &other) {
+        if (this != &other) {
             data_ = other.data_;
             name_ = other.name_;
         }
@@ -185,10 +168,8 @@ public:
 
     // TODO: Implement move assignment
     // Guide: Check self-assignment, then move data and name
-    HeavyResource &operator=(HeavyResource &&other) noexcept
-    {
-        if (this != &other)
-        {
+    HeavyResource &operator=(HeavyResource &&other) noexcept {
+        if (this != &other) {
             data_ = std::move(other.data_);
             name_ = std::move(other.name_);
         }
@@ -196,17 +177,19 @@ public:
         return *this;
     }
 
-    ~HeavyResource()
-    {
+    ~HeavyResource() {
         std::cout << "HeavyResource '" << name_ << "' destroyed\n";
     }
 
-    size_t size() const { return data_.size(); }
-    const std::string &name() const { return name_; }
+    size_t size() const {
+        return data_.size();
+    }
+    const std::string &name() const {
+        return name_;
+    }
 };
 
-void performance_test()
-{
+void performance_test() {
     std::cout << "\n=== Exercise 2: Performance Test ===\n";
 
     const size_t ITERATIONS = 1000;
@@ -221,8 +204,7 @@ void performance_test()
         std::vector<HeavyResource> resources;
         resources.reserve(ITERATIONS);
 
-        for (size_t i = 0; i < ITERATIONS; ++i)
-        {
+        for (size_t i = 0; i < ITERATIONS; ++i) {
             HeavyResource temp(RESOURCE_SIZE, "Copy" + std::to_string(i));
             // TODO: Push temp using copy (not move)
             // Hint: resources.push_back(temp);  // This copies!
@@ -239,8 +221,7 @@ void performance_test()
         std::vector<HeavyResource> resources;
         resources.reserve(ITERATIONS);
 
-        for (size_t i = 0; i < ITERATIONS; ++i)
-        {
+        for (size_t i = 0; i < ITERATIONS; ++i) {
             HeavyResource temp(RESOURCE_SIZE, "Move" + std::to_string(i));
             // TODO: Push temp using move
             // Hint: resources.push_back(std::move(temp));
@@ -263,25 +244,21 @@ void performance_test()
 // Exercise 3: Smart Pointer Workshop
 // =============================================================================
 
-class Resource
-{
-public:
+class Resource {
+   public:
     int id;
     std::string data;
 
-    Resource(int i, const std::string &d) : id(i), data(d)
-    {
+    Resource(int i, const std::string &d) : id(i), data(d) {
         std::cout << "Resource " << id << " created\n";
     }
 
-    ~Resource()
-    {
+    ~Resource() {
         std::cout << "Resource " << id << " destroyed\n";
     }
 };
 
-void smart_pointer_exercises()
-{
+void smart_pointer_exercises() {
     std::cout << "\n=== Exercise 3: Smart Pointer Workshop ===\n";
 
     // TODO: Create a unique_ptr to Resource
@@ -297,8 +274,7 @@ void smart_pointer_exercises()
 
         // TODO: Verify ptr1 is now null
         // Guide: Check if ptr1 is nullptr and print result
-        if (ptr1->data.empty())
-        {
+        if (ptr1 == nullptr) {
             std::cout << "ptr1 is nullptr and print result" << std::endl;
         }
     }
@@ -333,8 +309,7 @@ void smart_pointer_exercises()
 // =============================================================================
 
 template <typename T, typename... Args>
-auto make_resource_logged(Args &&...args)
-{
+auto make_resource_logged(Args &&...args) {
     std::cout << "Creating resource with " << sizeof...(args) << " arguments\n";
 
     // TODO: Implement perfect forwarding
@@ -345,8 +320,7 @@ auto make_resource_logged(Args &&...args)
 // TODO: Implement a function that detects value categories
 // Guide: Create template function that prints whether argument is lvalue or rvalue
 template <typename T>
-void analyze_value_category(T &&val)
-{
+void analyze_value_category(T &&val) {
     std::cout << "Received: ";
 
     // TODO: Use if constexpr and type traits to detect lvalue vs rvalue
@@ -356,8 +330,7 @@ void analyze_value_category(T &&val)
     std::cout << " with value: " << val << std::endl;
 }
 
-void perfect_forwarding_test()
-{
+void perfect_forwarding_test() {
     std::cout << "\n=== Exercise 4: Perfect Forwarding Test ===\n";
 
     // TODO: Test the factory with different argument types
@@ -396,15 +369,13 @@ void perfect_forwarding_test()
 // Exercise 5: Move-Only Type
 // =============================================================================
 
-class MoveOnlyResource
-{
-private:
+class MoveOnlyResource {
+   private:
     std::unique_ptr<int[]> data_;
     size_t size_;
 
-public:
-    explicit MoveOnlyResource(size_t size) : size_(size), data_(new int[size])
-    {
+   public:
+    explicit MoveOnlyResource(size_t size) : size_(size), data_(new int[size]) {
         std::fill_n(data_.get(), size_, 42);
         std::cout << "MoveOnlyResource created with size " << size_ << std::endl;
     }
@@ -420,17 +391,19 @@ public:
     // TODO: Implement move assignment
     // Guide: Move data and size, don't forget self-assignment check
 
-    ~MoveOnlyResource()
-    {
+    ~MoveOnlyResource() {
         std::cout << "MoveOnlyResource destroyed\n";
     }
 
-    size_t size() const { return size_; }
-    int *data() const { return data_.get(); }
+    size_t size() const {
+        return size_;
+    }
+    int *data() const {
+        return data_.get();
+    }
 };
 
-void move_only_test()
-{
+void move_only_test() {
     std::cout << "\n=== Exercise 5: Move-Only Type Test ===\n";
 
     // TODO: Create MoveOnlyResource
@@ -457,22 +430,20 @@ void move_only_test()
 // Main Function - Run All Exercises
 // =============================================================================
 
-int main()
-{
+int main() {
     std::cout << "🚀 Move Semantics Exercises\n";
     std::cout << "===========================\n";
 
-    try
-    {
+    try {
         // TODO: Uncomment exercises as you complete them
 
         test_string_wrapper();
         performance_test();
-        // smart_pointer_exercises();
+        smart_pointer_exercises();
         // perfect_forwarding_test();
         // move_only_test();
 
-        std::cout << "\n🎯 Complete the TODO items above, then uncomment the function calls!\n";
+        std::cout << "\n🎯 Complete the   items above, then uncomment the function calls!\n";
         std::cout << "\n📚 Learning Objectives:\n";
         std::cout << "1. Implement Rule of 5 correctly\n";
         std::cout << "2. Understand performance benefits of move semantics\n";
@@ -486,9 +457,7 @@ int main()
         std::cout << "  - Smart pointer best practices\n";
         std::cout << "  - Perfect forwarding patterns\n";
         std::cout << "  - Move-only resource management\n";
-    }
-    catch (const std::exception &e)
-    {
+    } catch (const std::exception &e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return 1;
     }
