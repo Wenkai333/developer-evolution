@@ -287,28 +287,43 @@ void smart_pointer_exercises()
     // TODO: Create a unique_ptr to Resource
     // Guide: Use std::make_unique to create Resource with id=1, data="unique"
     // Hint: auto ptr1 = std::make_unique<Resource>(1, "unique");
+    {
+        std::unique_ptr<Resource> ptr1 = std::make_unique<Resource>(1, "unique");
 
-    // TODO: Transfer ownership of ptr1 to ptr2 using move
-    // Guide: Create ptr2 and move ptr1 into it
-    // Hint: auto ptr2 = std::move(ptr1);
+        // TODO: Transfer ownership of ptr1 to ptr2 using move
+        // Guide: Create ptr2 and move ptr1 into it
+        // Hint: auto ptr2 = std::move(ptr1);
+        auto ptr2 = std::move(ptr1);
 
-    // TODO: Verify ptr1 is now null
-    // Guide: Check if ptr1 is nullptr and print result
+        // TODO: Verify ptr1 is now null
+        // Guide: Check if ptr1 is nullptr and print result
+        if (ptr1->data.empty())
+        {
+            std::cout << "ptr1 is nullptr and print result" << std::endl;
+        }
+    }
 
     // TODO: Create shared_ptr and demonstrate reference counting
     // Guide: Create shared1 with Resource(2, "shared")
     // Hint: auto shared1 = std::make_shared<Resource>(2, "shared");
+    std::shared_ptr<Resource> shared1 = std::make_shared<Resource>(2, "shared");
 
     // TODO: Create shared2 and shared3 pointing to same resource
     // Guide: Copy shared1 to create shared2 and shared3
     // Print use_count() after each copy
+    auto shared2 = shared1;
+    std::cout << "Share pointer copy to 2 = " << shared1.use_count() << std::endl;
+    auto shared3 = shared1;
+    std::cout << "Share pointer copy to 3 = " << shared1.use_count() << std::endl;
 
     // TODO: Create weak_ptr to break potential cycles
     // Guide: Create weak1 from shared1
     // Hint: std::weak_ptr<Resource> weak1 = shared1;
+    std::weak_ptr<Resource> weak1 = shared1;
 
     // TODO: Demonstrate weak_ptr.lock()
     // Guide: Use weak1.lock() to get temporary shared_ptr, check if it's valid
+    auto lock = weak1.lock();
 
     std::cout << "Smart pointer exercises completed!\n";
 }
