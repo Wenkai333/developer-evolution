@@ -35,10 +35,3 @@ add_custom_target(run_day1_examples
     DEPENDS move_semantics_demo stl_advanced
     COMMENT "Running all Day 1 examples"
 )
-
-# Exercise executable
-add_executable(move_semantics_exercises 
-    exercises/move_semantics_exercises.cpp
-)
-target_link_libraries(move_semantics_exercises PRIVATE Threads::Threads)
-

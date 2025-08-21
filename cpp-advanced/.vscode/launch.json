@@ -8,7 +8,9 @@
             "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",
             "args": [],
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "Build Current File"
+            "preLaunchTask": "Build Current File",
+            "console": "integratedTerminal",
+            "stopOnEntry": false
         },
         {
             "name": "Debug Selected Program",
@@ -17,14 +19,29 @@
             "program": "${workspaceFolder}/build/${input:programName}",
             "args": [],
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "Build"
+            "preLaunchTask": "Build",
+            "console": "integratedTerminal",
+            "stopOnEntry": false
+        },
+        {
+            "name": "Debug Move Semantics Exercise",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/day1/move_semantics_exercises",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build",
+            "console": "integratedTerminal",
+            "stopOnEntry": false,
+            "sourceLanguages": ["cpp"],
+            "expressions": "native"
         }
     ],
     "inputs": [
         {
             "id": "programName",
             "type": "promptString",
-            "description": "Enter the program name to debug"
+            "description": "Enter the program name to debug (e.g., day1/move_semantics_exercises)"
         }
     ]
 }
