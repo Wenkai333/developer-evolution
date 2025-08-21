@@ -156,17 +156,45 @@ public:
     // Guide: Copy both data_ and name_ from other
     // Hint: data_(other.data_), name_(other.name_)
     // Add timing to see how long it takes!
+    HeavyResource(const HeavyResource &other) : data_(other.data_), name_(other.name_)
+    {
+        std::cout << "HeavyResource is copy construct" << std::endl;
+    }
 
     // TODO: Implement move constructor
     // Guide: Move both data_ and name_ from other, mark as noexcept
     // Hint: data_(std::move(other.data_)), name_(std::move(other.name_))
     // Add timing to see how fast it is!
+    HeavyResource(HeavyResource &&other) noexcept : data_(std::move(other.data_)), name_(std::move(other.name_))
+    {
+        std::cout << "HeavyResource is move construct" << std::endl;
+    }
 
     // TODO: Implement copy assignment
     // Guide: Check self-assignment, then copy data and name
+    HeavyResource &operator=(const HeavyResource &other)
+    {
+        if (this != &other)
+        {
+            data_ = other.data_;
+            name_ = other.name_;
+        }
+        std::cout << "HeavyResource is copy assign opt" << std::endl;
+        return *this;
+    }
 
     // TODO: Implement move assignment
     // Guide: Check self-assignment, then move data and name
+    HeavyResource &operator=(HeavyResource &&other) noexcept
+    {
+        if (this != &other)
+        {
+            data_ = std::move(other.data_);
+            name_ = std::move(other.name_);
+        }
+        std::cout << "HeavyResource is move assign opt" << std::endl;
+        return *this;
+    }
 
     ~HeavyResource()
     {
@@ -198,6 +226,7 @@ void performance_test()
             HeavyResource temp(RESOURCE_SIZE, "Copy" + std::to_string(i));
             // TODO: Push temp using copy (not move)
             // Hint: resources.push_back(temp);  // This copies!
+            resources.push_back(temp);
         }
     }
     auto end_copy = std::chrono::high_resolution_clock::now();
@@ -215,12 +244,17 @@ void performance_test()
             HeavyResource temp(RESOURCE_SIZE, "Move" + std::to_string(i));
             // TODO: Push temp using move
             // Hint: resources.push_back(std::move(temp));
+            resources.push_back(std::move(temp));
         }
     }
     auto end_move = std::chrono::high_resolution_clock::now();
 
     // TODO: Calculate and print timing results
     // Guide: Use duration_cast to get milliseconds, compare copy vs move times
+    auto copy_time = std::chrono::duration_cast<std::chrono::microseconds>(end_copy - start_copy);
+    std::cout << "Copy: " << copy_time.count() << std::endl;
+    auto move_time = std::chrono::duration_cast<std::chrono::microseconds>(end_move - start_move);
+    std::cout << "Move: " << move_time.count() << std::endl;
 
     std::cout << "Performance test completed!\n";
 }
@@ -418,7 +452,7 @@ int main()
         // TODO: Uncomment exercises as you complete them
 
         test_string_wrapper();
-        // performance_test();
+        performance_test();
         // smart_pointer_exercises();
         // perfect_forwarding_test();
         // move_only_test();
