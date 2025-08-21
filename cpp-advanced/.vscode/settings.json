@@ -4,24 +4,66 @@
     "editor.formatOnSave": true,
     "editor.rulers": [80, 100],
     "editor.bracketPairColorization.enabled": true,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    
+    // Language-specific formatting
+    "[cpp]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "ms-vscode.cpptools",
+        "editor.tabSize": 4
+    },
+    "[c]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "ms-vscode.cpptools",
+        "editor.tabSize": 4
+    },
+    "[cmake]": {
+        "editor.formatOnSave": true
+    },
     
     // C/C++ extension settings
     "C_Cpp.default.compilerPath": "/opt/homebrew/opt/llvm/bin/clang++",
     "C_Cpp.default.cppStandard": "c++23",
     "C_Cpp.default.intelliSenseMode": "macos-clang-arm64",
     "C_Cpp.default.compileCommands": "${workspaceFolder}/compile_commands.json",
-    "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, IndentWidth: 4 }",
+    
+    // Enhanced clang-format settings
+    "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 100, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: false, AllowShortLoopsOnASingleLine: false }",
+    "C_Cpp.formatting": "clangFormat",
+    "C_Cpp.clang_format_path": "/opt/homebrew/opt/llvm/bin/clang-format",
+    
+    // IntelliSense settings
+    "C_Cpp.intelliSenseEngine": "default",
+    "C_Cpp.autocompleteAddParentheses": true,
+    "C_Cpp.suggestSnippets": true,
     
     // CMake settings
     "cmake.generator": "Ninja",
     "cmake.configureSettings": {
         "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm/bin/clang++",
-        "CMAKE_BUILD_TYPE": "Debug"
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
     },
+    "cmake.buildDirectory": "${workspaceFolder}/build",
     
     // Terminal settings
     "terminal.integrated.defaultProfile.osx": "zsh",
     "terminal.integrated.env.osx": {
         "PATH": "/opt/homebrew/opt/llvm/bin:/opt/homebrew/bin:${env:PATH}"
-    }
+    },
+    
+    // File associations
+    "files.associations": {
+        "*.tpp": "cpp",
+        "*.ipp": "cpp",
+        "*.h": "c",
+        "*.hpp": "cpp"
+    },
+    
+    // Additional helpful settings
+    "editor.minimap.enabled": true,
+    "editor.showFoldingControls": "mouseover",
+    "editor.foldingStrategy": "indentation",
+    "workbench.colorTheme": "Default Dark+"
 }
