@@ -315,6 +315,7 @@ auto make_resource_logged(Args &&...args) {
     // TODO: Implement perfect forwarding
     // Guide: Use std::make_unique with std::forward for each argument
     // Hint: return std::make_unique<T>(std::forward<Args>(args)...);
+    return std::make_unique<T>(std::forward<Args>(args)...);
 }
 
 // TODO: Implement a function that detects value categories
@@ -326,6 +327,11 @@ void analyze_value_category(T &&val) {
     // TODO: Use if constexpr and type traits to detect lvalue vs rvalue
     // Guide: Check if T is lvalue reference using std::is_lvalue_reference_v<T>
     // Hint: if constexpr (std::is_lvalue_reference_v<T>) { ... } else { ... }
+    if constexpr (std::is_lvalue_reference_v<T>) {
+        std::cout << "lvalue";
+    } else {
+        std::cout << "rvalue";
+    }
 
     std::cout << " with value: " << val << std::endl;
 }
@@ -340,13 +346,13 @@ void perfect_forwarding_test() {
     std::string name = "test";
 
     // TODO: Test with lvalue arguments
-    // Hint: auto res1 = make_resource_logged<Resource>(id, name);
+    auto res1 = make_resource_logged<Resource>(id, name);
 
     // TODO: Test with rvalue arguments
-    // Hint: auto res2 = make_resource_logged<Resource>(100, std::string("rvalue"));
+    auto res2 = make_resource_logged<Resource>(100, std::string("rvalue"));
 
     // TODO: Test with mixed arguments
-    // Hint: auto res3 = make_resource_logged<Resource>(std::move(id), name);
+    auto res3 = make_resource_logged<Resource>(std::move(id), name);
 
     // TODO: Test value category analysis
     // Guide: Call analyze_value_category with different types of arguments
@@ -354,13 +360,13 @@ void perfect_forwarding_test() {
     std::string test_str = "lvalue";
 
     // TODO: Test with lvalue
-    // Hint: analyze_value_category(test_str);
+    analyze_value_category(test_str);
 
     // TODO: Test with rvalue
-    // Hint: analyze_value_category(std::move(test_str));
+    analyze_value_category(std::move(test_str));
 
     // TODO: Test with temporary
-    // Hint: analyze_value_category(std::string("temporary"));
+    analyze_value_category(std::string("temporary"));
 
     std::cout << "Perfect forwarding test completed!\n";
 }
@@ -383,13 +389,28 @@ class MoveOnlyResource {
     // TODO: Delete copy constructor and copy assignment
     // Guide: Use = delete to prevent copying
     // Hint: MoveOnlyResource(const MoveOnlyResource&) = delete;
+    MoveOnlyResource(const MoveOnlyResource &) = delete;
+    MoveOnlyResource &operator=(const MoveOnlyResource &) = delete;
 
     // TODO: Implement move constructor
     // Guide: Move data_ and size_ from other, mark noexcept
     // Hint: data_(std::move(other.data_)), size_(other.size_)
+    MoveOnlyResource(MoveOnlyResource &&other) noexcept
+        : data_(std::move(other.data_)), size_(other.size_) {
+        other.size_ = 0;  // Reset other to valid state
+        std::cout << "MoveOnlyResource move constructed with size " << size_ << std::endl;
+    }
 
     // TODO: Implement move assignment
     // Guide: Move data and size, don't forget self-assignment check
+    MoveOnlyResource &operator=(MoveOnlyResource &&other) {
+        if (this != &other) {
+            data_ = std::move(other.data_);
+            size_ = other.size_;
+            other.size_ = 0;
+        }
+        return *this;
+    }
 
     ~MoveOnlyResource() {
         std::cout << "MoveOnlyResource destroyed\n";
@@ -410,7 +431,7 @@ void move_only_test() {
     MoveOnlyResource res1(100);
 
     // TODO: Try to move it (should work)
-    // Hint: MoveOnlyResource res2 = std::move(res1);
+    MoveOnlyResource res2 = std::move(res1);
 
     // TODO: Try to copy it (should not compile - comment out when testing)
     // MoveOnlyResource res3 = res2;  // This should fail!
@@ -419,9 +440,8 @@ void move_only_test() {
     // Guide: Use emplace_back to construct in place, or push_back with move
 
     std::vector<MoveOnlyResource> resources;
-
-    // TODO: Add resources to vector using move
-    // Hint: resources.emplace_back(50); or resources.push_back(MoveOnlyResource(50));
+    resources.emplace_back(50);                 // Construct in place
+    resources.push_back(MoveOnlyResource(75));  // Move temporary
 
     std::cout << "Move-only test completed!\n";
 }
@@ -440,8 +460,8 @@ int main() {
         test_string_wrapper();
         performance_test();
         smart_pointer_exercises();
-        // perfect_forwarding_test();
-        // move_only_test();
+        perfect_forwarding_test();
+        move_only_test();
 
         std::cout << "\n🎯 Complete the   items above, then uncomment the function calls!\n";
         std::cout << "\n📚 Learning Objectives:\n";
